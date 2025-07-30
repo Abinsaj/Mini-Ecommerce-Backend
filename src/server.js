@@ -4,6 +4,7 @@ import userRouter from './routes/userRoute.js'
 import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
 import adminRouter from './routes/adminRoute.js'
+import orderRoute from './routes/orderRoute.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 
@@ -24,10 +25,11 @@ app.use(cors(corsOption))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-app.use('/',userRouter)
-app.use('/admin',adminRouter)
-app.use('/product',productRouter)
-app.use('/cart', cartRouter)
+app.use('/api/',userRouter)
+app.use('/api/admin',adminRouter)
+app.use('/api/product',productRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/order',orderRoute)
 
 
 app.listen(5678,()=>{
