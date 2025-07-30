@@ -1,3 +1,4 @@
+import { createRefreshToken, createToken } from "../config/jwtConfig.js"
 import {  existingAdmin } from "../repository/adminRepository.js"
 
 const adminLogin = async(req, res)=>{
@@ -13,7 +14,31 @@ const adminLogin = async(req, res)=>{
             console.log('its hererer')
             if(password == isAdmin.password){
                 console.log('its hererererererer')
-                res.status(200).json({success: true, message: "Login successful", admin: isAdmin})
+
+                const accessToken = createToken(isAdmin._id,'admin')
+                const refreshToken = createRefreshToken(isAdmin._id, 'admin')
+
+                res.cookie('AdminAccessToken',accessToken,{
+                    httpOnly: true,
+                    sameSite:'none',
+                    secure: true,
+                    maxAge: 60 * 1000,
+                })
+    
+                res.cookie('AdminRefreshToken',refreshToken,{
+                    httpOnly: true,
+                    sameSite: 'none',
+                    secure: true,
+                    maxAge: 7 * 24 * 60 * 60 * 10000
+                })
+
+                const admin = {
+                    isAdmin,
+                    accessToken,
+                    refreshToken
+                }
+
+                res.status(200).json({success: true, message: "Login successful", admin})
             }
         }
     } catch (error) {

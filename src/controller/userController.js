@@ -1,3 +1,4 @@
+import { createRefreshToken, createToken } from "../config/jwtConfig.js"
 import { existingUser,createUser } from "../repository/userRepository.js"
 import bcrypt from 'bcrypt'
 
@@ -39,14 +40,40 @@ const login = async(req,res)=>{
         const userExist = await existingUser(email)
         console.log(userExist,'titititiitti')
         if(!userExist){
-            res.status(404).json({success: false, message:'user does not exist'})
+             return res.status(404).json({success: false, message:'user does not exist'})
         }else{
             const comparePassword = await bcrypt.compare(password,userExist.password)
             if(!comparePassword){
-                res.status(401).json({success: false, message: 'Invalid Credentials'})
+                return res.status(401).json({success: false, message: 'Invalid Credentials'})
             }
                 console.log('k,dfalkkaaga')
-                res.status(200).json({success: true, message: "Login successgul", user: userExist})
+
+                const accessToken = createToken(userExist._id,"user")
+                const refreshToken = createRefreshToken(userExist._id, "user")
+
+                console.log(accessToken,'gadfggafg', refreshToken)
+
+                res.cookie('UserAccessToken',accessToken,{
+                    httpOnly: true,
+                    sameSite: "none",
+                    secure: true,
+                    maxAge: 60 * 1000,
+                })
+    
+                res.cookie('UserRefreshToken',refreshToken,{
+                    httpOnly: true,
+                    sameSite: "none",
+                    secure: true,
+                    maxAge: 7 * 24 * 60 * 60 * 10000
+                })
+
+                const user = {
+                    userExist,
+                    accessToken,
+                    refreshToken
+                }
+
+                return res.status(200).json({success: true, message: "Login successgul", user})
             
         }
     } catch (error) {
