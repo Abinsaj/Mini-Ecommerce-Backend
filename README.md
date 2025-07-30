@@ -4,6 +4,13 @@ This is the backend for the **Mini-Ecommerce** application built using Node.js, 
 
 ---
 
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Abinsaj/Mini-Ecommerce-Backend.git
+cd Mini-Ecommerce-Backend
+```
+
 ## 📁 Project Structure
 
 backend/
