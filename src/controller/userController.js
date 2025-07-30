@@ -4,25 +4,20 @@ import bcrypt from 'bcrypt'
 
 const signup = async(req, res)=>{
     try {
-        console.log('its here')
         const {name, email, password ,confirmPassword} = req.body
         const ExistingUser = await existingUser(email)
-        console.log(ExistingUser,'fghj')
         if(ExistingUser){
             res.status(409).json({ success: false,message: "User already exist"})
         }else{
             if(password !== confirmPassword){
                 res.status(409).json({ success: false,message: "Please enter same password"})
             }
-            console.log('yalayalayalayaa')
             const hashPassowrd = await bcrypt.hash(password,10)
-            console.log(hashPassowrd,'this is the hashed password')
             const data = {
                 name: name,
                 email: email,
                 password: hashPassowrd
             }
-            console.log('its hrerererererererererer')
             const user = await createUser(data)
             if(user){
                 res.status(201).json({ success: true,message: "User created successfully", user})
@@ -38,7 +33,6 @@ const login = async(req,res)=>{
     try {
         const {email,password} = req.body
         const userExist = await existingUser(email)
-        console.log(userExist,'titititiitti')
         if(!userExist){
              return res.status(404).json({success: false, message:'user does not exist'})
         }else{
@@ -46,12 +40,10 @@ const login = async(req,res)=>{
             if(!comparePassword){
                 return res.status(401).json({success: false, message: 'Invalid Credentials'})
             }
-                console.log('k,dfalkkaaga')
 
                 const accessToken = createToken(userExist._id,"user")
                 const refreshToken = createRefreshToken(userExist._id, "user")
 
-                console.log(accessToken,'gadfggafg', refreshToken)
 
                 res.cookie('UserAccessToken',accessToken,{
                     httpOnly: true,

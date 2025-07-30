@@ -2,7 +2,6 @@ import User from "../Schema/userSchema.js"
 
 const existingUser = async(email)=>{
     try {
-        console.log('fhahahfadkfa')
         const user = await User.findOne({email: email})
         return user
     } catch (error) {

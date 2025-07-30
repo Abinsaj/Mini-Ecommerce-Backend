@@ -3,7 +3,6 @@ import Order from "../Schema/orderSchema.js";
 
 const placeOrder = async (req, res) => {
     try {
-        console.log('its hrrererererererere')
       const { userId, items, totalAmount, paymentMode } = req.body;
   
       if (!userId || !items || !paymentMode || totalAmount === undefined) {

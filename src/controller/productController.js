@@ -4,7 +4,6 @@ import { createProduct, allProduct, getProduct, updateProductById, productDelete
 const addProduct = async(req, res) =>{
     try {
         const file = req.file;
-        console.log(file,'this si the file')
         const {name, price, description, quantity} = req.body;
 
         if(!file){
@@ -89,7 +88,6 @@ const updateProduct = async(req, res)=>{
 const deleteProduct = async(req, res)=>{
     try {
         const {id} = req.params
-        console.log(id,'this is the id')
         const deleteProduct = await productDelete(id)
         res.status(200).json({ message: "Product deleted successfully", deleteProduct });
     } catch (error) {
