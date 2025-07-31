@@ -7,6 +7,9 @@ import adminRouter from './routes/adminRoute.js'
 import orderRoute from './routes/orderRoute.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv'
+
+const frontend_url=process.env.FRONTEND_URL;
 
 const app = express()
 
@@ -15,7 +18,7 @@ connectDB()
 app.use(cookieParser())
 
 const corsOption = {
-    origin: 'http://localhost:5173',
+    origin: frontend_url,
     methods: ['GET','POST','PUT','DELETE'],
     credentials: true
 }
