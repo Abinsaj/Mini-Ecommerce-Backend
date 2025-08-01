@@ -7,7 +7,7 @@ const adminLogin = async(req, res)=>{
         
         const isAdmin = await existingAdmin(email)
         if(!isAdmin){
-            res.status(404).json({success: false, message:'Admin does not exist'})
+            res.status(404).json({success: false, message:'Invalid admin credentials'})
         }else{
             if(password == isAdmin.password){
 
@@ -35,6 +35,8 @@ const adminLogin = async(req, res)=>{
                 }
 
                 res.status(200).json({success: true, message: "Login successful", admin})
+            }else{
+                res.status(401).json({success:false, message: 'Incorrect password'})
             }
         }
     } catch (error) {
